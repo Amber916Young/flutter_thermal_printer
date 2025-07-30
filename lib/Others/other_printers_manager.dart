@@ -96,6 +96,7 @@ class OtherPrinterManager {
     Printer printer,
     List<int> bytes, {
     bool longData = false,
+    bool withoutResponse = false,
   }) async {
     if (printer.connectionType == ConnectionType.USB) {
       try {
@@ -133,7 +134,7 @@ class OtherPrinterManager {
           return;
         }
 
-        const maxChunkSize = 512;
+        const maxChunkSize = 509;
         for (var i = 0; i < bytes.length; i += maxChunkSize) {
           final chunk = bytes.sublist(
             i,
@@ -142,7 +143,7 @@ class OtherPrinterManager {
 
           await writeCharacteristic.write(
             Uint8List.fromList(chunk),
-            withoutResponse: true,
+            withoutResponse: withoutResponse,
           );
         }
 

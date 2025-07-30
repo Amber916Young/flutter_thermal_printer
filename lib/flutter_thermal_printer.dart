@@ -56,6 +56,7 @@ class FlutterThermalPrinter {
     Printer device,
     List<int> bytes, {
     bool longData = false,
+    bool withoutResponse = false,
   }) async {
     if (Platform.isWindows) {
       return await WindowPrinterManager.instance.printData(
@@ -68,6 +69,7 @@ class FlutterThermalPrinter {
         device,
         bytes,
         longData: longData,
+        withoutResponse: withoutResponse,
       );
     }
   }
@@ -229,6 +231,14 @@ class FlutterThermalPrinter {
         raster,
         longData: true,
       );
+
+      if (cutAfterPrinted) {
+        await FlutterThermalPrinter.instance.printData(
+          printer,
+          ticket.cut(),
+          longData: true,
+        );
+      }
       return;
     }
     if (Platform.isWindows) {
